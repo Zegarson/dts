@@ -257,7 +257,7 @@
 
 		pll3_cfg1: pll3_cfg1 {
 			st,pll_vco = < &pll3_vco_416Mhz >;
-			st,pll_div_pqr = < 1 39 3 >;
+			st,pll_div_pqr = < 1 39 33 >;
 		};
 		/* USER CODE BEGIN pll3 */
 		/* USER CODE END pll3 */
