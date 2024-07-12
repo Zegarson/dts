@@ -20,5 +20,18 @@
 }; /*root*/
 
 /* USER CODE BEGIN addons */
+&uart4 {
+	u-boot,dm-pre-reloc;
+};
+
+&uart4_pins_mx {
+	u-boot,dm-pre-reloc;
+	pins1 {
+		u-boot,dm-pre-reloc;
+	};
+	pins2 {
+		u-boot,dm-pre-reloc;
+	};
+};
 /* USER CODE END addons */
 

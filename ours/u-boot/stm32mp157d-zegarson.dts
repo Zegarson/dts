@@ -42,6 +42,13 @@
 	};
 
 	/* USER CODE BEGIN root */
+	aliases {
+		serial0 = &uart4;
+	};
+
+	chosen {
+		stdout-path = "serial0:115200n8";
+	};
 	/* USER CODE END root */
 
 	clocks{
@@ -535,8 +542,6 @@
 	status = "okay";
 
 	/* USER CODE BEGIN pwr_regulators */
-	vdd-supply = <&vdd>;
-	vdd_3v3_usbfs-supply = <&vdd_usb>;
 	/* USER CODE END pwr_regulators */
 };
 
