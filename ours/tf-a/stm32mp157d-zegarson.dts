@@ -23,7 +23,7 @@
 /* USER CODE END includes */
 
 / {
-	model = "Zegarson board TF-A testing 0.0.2";
+	model = "Zegarson board TF-A testing 0.0.8";
 	compatible = "st,stm32mp157d-pin_configuration-mx", "st,stm32mp157";
 
 	memory@c0000000 {
@@ -92,7 +92,7 @@
 		};
 		pins2 {
 			pinmux = <STM32_PINMUX('C', 12, AF12)>; /* SDMMC1_CK */
-			bias-disable;
+			bias-pull-up;
 			drive-push-pull;
 			slew-rate = <3>;
 		};
@@ -402,7 +402,7 @@
 
 		pll3_cfg1: pll3_cfg1 {
 			st,pll_vco = < &pll3_vco_416Mhz >;
-			st,pll_div_pqr = < 1 39 33 >;
+			st,pll_div_pqr = < 1 39 51 >;
 		};
 		/* USER CODE BEGIN pll3 */
 		/* USER CODE END pll3 */
@@ -430,11 +430,11 @@
 	status = "okay";
 
 	/* USER CODE BEGIN sdmmc1 */
-	non-removable;
+	broken-cd;
+	disable-wp;
+	st,neg-edge;
 	bus-width = <1>;
 	vmmc-supply = <&v2v9_emmc>;
-	broken-cd;
-	max-frequency = <12000000>;
 	/* USER CODE END sdmmc1 */
 };
 
@@ -444,7 +444,8 @@
 	status = "okay";
 
 	/* USER CODE BEGIN sdmmc2 */
-	non-removable;
+	disable-wp;
+	st,neg-edge;
 	bus-width = <8>;
 	vmmc-supply = <&v2v9_emmc>;
 	/* USER CODE END sdmmc2 */

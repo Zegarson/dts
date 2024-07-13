@@ -29,6 +29,13 @@
 		reg = <0xc0000000 0x20000000>;
 
 		/* USER CODE BEGIN memory */
+		aliases {
+			serial0 = &uart4;
+		};
+
+		chosen {
+			stdout-path = "serial0:115200n8";
+		};
 		/* USER CODE END memory */
 	};
 
@@ -42,13 +49,6 @@
 	};
 
 	/* USER CODE BEGIN root */
-	aliases {
-		serial0 = &uart4;
-	};
-
-	chosen {
-		stdout-path = "serial0:115200n8";
-	};
 	/* USER CODE END root */
 
 	clocks{
@@ -122,7 +122,7 @@
 		};
 		pins2 {
 			pinmux = <STM32_PINMUX('C', 12, AF12)>; /* SDMMC1_CK */
-			bias-disable;
+			bias-pull-up;
 			drive-push-pull;
 			slew-rate = <3>;
 		};
@@ -138,7 +138,7 @@
 		};
 		pins2 {
 			pinmux = <STM32_PINMUX('C', 12, AF12)>; /* SDMMC1_CK */
-			bias-disable;
+			bias-pull-up;
 			drive-push-pull;
 			slew-rate = <3>;
 		};
