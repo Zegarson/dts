@@ -23,7 +23,7 @@
 /* USER CODE END includes */
 
 / {
-	model = "Zegarson board TF-A testing 0.0.8";
+	model = "Zegarson board TF-A testing badzonor 0.0.0 200MHz";
 	compatible = "st,stm32mp157d-pin_configuration-mx", "st,stm32mp157";
 
 	memory@c0000000 {
@@ -35,6 +35,7 @@
 	};
 
 	/* USER CODE BEGIN root */
+
 	vin: vin {
 		compatible = "regulator-fixed";
 		regulator-name = "vin";
@@ -56,12 +57,14 @@
 		/* USER CODE BEGIN clocks */
 		/* USER CODE END clocks */
 
+
 		clk_hsi: clk-hsi {
 			clock-frequency = <64000000>;
 
 			/* USER CODE BEGIN clk_hsi */
 			/* USER CODE END clk_hsi */
 		};
+
 		clk_lse: clk-lse {
 			clock-frequency = <32768>;
 			st,drive = < LSEDRV_MEDIUM_HIGH >;
@@ -69,6 +72,7 @@
 			/* USER CODE BEGIN clk_lse */
 			/* USER CODE END clk_lse */
 		};
+
 		clk_hse: clk-hse {
 			clock-frequency = <24000000>;
 			st,digbypass;
@@ -81,10 +85,13 @@
 }; /*root*/
 
 &pinctrl {
+
 	sdmmc1_pins_mx: sdmmc1_mx-0 {
 		pins1 {
 			pinmux = <STM32_PINMUX('C', 8, AF12)>, /* SDMMC1_D0 */
+					 <STM32_PINMUX('C', 9, AF12)>, /* SDMMC1_D1 */
 					 <STM32_PINMUX('C', 10, AF12)>, /* SDMMC1_D2 */
+					 <STM32_PINMUX('C', 11, AF12)>, /* SDMMC1_D3 */
 					 <STM32_PINMUX('D', 2, AF12)>; /* SDMMC1_CMD */
 			bias-pull-up;
 			drive-push-pull;
@@ -92,11 +99,12 @@
 		};
 		pins2 {
 			pinmux = <STM32_PINMUX('C', 12, AF12)>; /* SDMMC1_CK */
-			bias-pull-up;
+			bias-disable;
 			drive-push-pull;
 			slew-rate = <3>;
 		};
 	};
+
 
 	sdmmc2_pins_mx: sdmmc2_mx-0 {
 		pins1 {
@@ -126,6 +134,7 @@
 		};
 	};
 
+
 	sdmmc3_pins_mx: sdmmc3_mx-0 {
 		pins1 {
 			pinmux = <STM32_PINMUX('D', 1, AF10)>, /* SDMMC3_D0 */
@@ -145,6 +154,7 @@
 		};
 	};
 
+
 	uart4_pins_mx: uart4_mx-0 {
 		pins1 {
 			pinmux = <STM32_PINMUX('B', 2, AF8)>; /* UART4_RX */
@@ -163,6 +173,7 @@
 };
 
 &pinctrl_z {
+
 	i2c4_pins_z_mx: i2c4_mx-0 {
 		pins {
 			pinmux = <STM32_PINMUX('Z', 4, AF6)>, /* I2C4_SCL */
@@ -186,6 +197,7 @@
 	i2c-scl-rising-time-ns = <185>;	
 	i2c-scl-falling-time-ns = <20>;
 	clock-frequency = <400000>;
+
 
 	pmic: stpmic@33 {
 		compatible = "st,stpmic1";
@@ -212,6 +224,7 @@
 			pwr_sw1-supply = <&bst_out>;
 			pwr_sw2-supply = <&bst_out>;
 
+
 			vddcore: buck1 {
 				regulator-name = "vddcore";
 				regulator-min-microvolt = <1200000>;
@@ -221,6 +234,7 @@
 				regulator-over-current-protection;
 			};
 
+
 			vdd2_ddr: buck2 {
 				regulator-name = "vdd2_ddr";
 				regulator-min-microvolt = <1200000>;
@@ -229,6 +243,7 @@
 				regulator-initial-mode = <0>;
 				regulator-over-current-protection;
 			};
+
 
 			vdd: buck3 {
 				regulator-name = "vdd";
@@ -240,6 +255,7 @@
 				regulator-over-current-protection;
 			};
 
+
 			v3v3: buck4 {
 				regulator-name = "v3v3";
 				regulator-min-microvolt = <3300000>;
@@ -249,12 +265,14 @@
 				regulator-initial-mode = <0>;
 			};
 
+
 			ldo1_unused: ldo1 {
 				regulator-name = "ldo1_unused";
 				regulator-min-microvolt = <1800000>;
 				regulator-max-microvolt = <1800000>;
 				regulator-always-on;
 			};
+
 
 			v2v9_sd: ldo2 {
 				regulator-name = "v2v9_sd";
@@ -263,6 +281,7 @@
 				regulator-always-on;
 			};
 
+
 			vdd1_ddr: ldo3 {
 				regulator-name = "vdd1_ddr";
 				regulator-always-on;
@@ -270,11 +289,13 @@
 				st,regulator-bypass;
 			};
 
+
 			vdd_usb: ldo4 {
 				regulator-name = "vdd_usb";
 				regulator-min-microvolt = <3300000>;
 				regulator-max-microvolt = <3300000>;
 			};
+
 
 			v2v9_emmc: ldo5 {
 				regulator-name = "v2v9_emmc";
@@ -283,6 +304,7 @@
 				regulator-always-on;
 			};
 
+
 			ldo6_unused: ldo6 {
 				regulator-name = "ldo6_unused";
 				regulator-min-microvolt = <1200000>;
@@ -290,18 +312,22 @@
 				regulator-always-on;
 			};
 
+
 			vref_ddr: vref_ddr {
 				regulator-name = "vref_ddr";
 				regulator-always-on;
 			};
 
+
 			bst_out: boost {
 				regulator-name = "bst_out";
 			};
 
+
 			vbus_otg: pwr_sw1 {
 				regulator-name = "vbus_otg";
 			};
+
 
 			vbus_sw: pwr_sw2 {
 				regulator-name = "vbus_sw";
@@ -344,20 +370,24 @@
 		DIV(DIV_MCO2, 0)
 	>;
 	st,pll_vco {
+
 		pll1_vco_1300Mhz: pll1-vco-1300Mhz {
 			src = < CLK_PLL12_HSE >;
 			divmn = < 2 80 >;
 			frac = < 0x800 >;
 		};
+
 		pll2_vco_1066Mhz: pll2-vco-1066Mhz {
 			src = < CLK_PLL12_HSE >;
-			divmn = < 2 65 >;
-			frac = < 0x1400 >;
+			divmn = < 2 49 >;
+			frac = < 0x0001 >;
 		};
+
 		pll3_vco_416Mhz: pll3-vco-416Mhz {
 			src = < CLK_PLL3_HSE >;
 			divmn = < 2 51 >;
 		};
+
 		pll4_vco_600Mhz: pll4-vco-600Mhz {
 			src = < CLK_PLL4_HSE >;
 			divmn = < 1 49 >;
@@ -366,11 +396,13 @@
 		/* USER CODE END rcc_st-pll_vco */
 	};
 
+
 	pll1:st,pll@0 {
 		compatible = "st,stm32mp1-pll";
 		reg = <0>;
 
 		st,pll = < &pll1_cfg1 >;
+
 
 		pll1_cfg1: pll1_cfg1 {
 			st,pll_vco = < &pll1_vco_1300Mhz >;
@@ -380,25 +412,29 @@
 		/* USER CODE END pll1 */
 	};
 
+
 	pll2:st,pll@1 {
 		compatible = "st,stm32mp1-pll";
 		reg = <1>;
 
 		st,pll = < &pll2_cfg1 >;
 
+
 		pll2_cfg1: pll2_cfg1 {
 			st,pll_vco = < &pll2_vco_1066Mhz >;
-			st,pll_div_pqr = < 1 0 0 >;
+			st,pll_div_pqr = < 1 0 1 >;
 		};
 		/* USER CODE BEGIN pll2 */
 		/* USER CODE END pll2 */
 	};
+
 
 	pll3:st,pll@2 {
 		compatible = "st,stm32mp1-pll";
 		reg = <2>;
 
 		st,pll = < &pll3_cfg1 >;
+
 
 		pll3_cfg1: pll3_cfg1 {
 			st,pll_vco = < &pll3_vco_416Mhz >;
@@ -408,11 +444,13 @@
 		/* USER CODE END pll3 */
 	};
 
+
 	pll4:st,pll@3 {
 		compatible = "st,stm32mp1-pll";
 		reg = <3>;
 
 		st,pll = < &pll4_cfg1 >;
+
 
 		pll4_cfg1: pll4_cfg1 {
 			st,pll_vco = < &pll4_vco_600Mhz >;
@@ -433,7 +471,7 @@
 	broken-cd;
 	disable-wp;
 	st,neg-edge;
-	bus-width = <1>;
+	bus-width = <4>;
 	vmmc-supply = <&v2v9_emmc>;
 	/* USER CODE END sdmmc1 */
 };
@@ -489,16 +527,17 @@
 };
 
 /* USER CODE BEGIN addons */
-&pwr_regulators {
+&pwr_regulators{
 	vdd-supply = <&vdd>;
 	vdd_3v3_usbfs-supply = <&vdd_usb>;
 };
 
 &bsec {
+	status = "okay";
+
 	board_id: board_id@ec {
 		reg = <0xec 0x4>;
 		st,non-secure-otp;
 	};
 };
 /* USER CODE END addons */
-

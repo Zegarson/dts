@@ -247,7 +247,7 @@
 
 		pll2_cfg1: pll2_cfg1 {
 			st,pll_vco = < &pll2_vco_1066Mhz >;
-			st,pll_div_pqr = < 1 0 0 >;
+			st,pll_div_pqr = < 1 0 1 >;
 		};
 		/* USER CODE BEGIN pll2 */
 		/* USER CODE END pll2 */
