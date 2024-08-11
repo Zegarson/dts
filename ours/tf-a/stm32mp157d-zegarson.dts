@@ -468,6 +468,16 @@
 	/* USER CODE END sdmmc2 */
 };
 
+&sdmmc3{
+	pinctrl-names = "default";
+	pinctrl-0 = <&sdmmc3_pins_mx>;
+	status = "okay";
+
+	/* USER CODE BEGIN sdmmc2 */
+	/* USER CODE END sdmmc2 */
+};
+
+
 &uart4{
 	pinctrl-names = "default";
 	pinctrl-0 = <&uart4_pins_mx>;
@@ -506,6 +516,18 @@
 };
 
 /* USER CODE BEGIN addons */
+&cpu0 {
+	cpu-supply = <&vddcore>;
+};
+
+&cpu1 {
+	cpu-supply = <&vddcore>;
+};
+
+&rng1 {
+	status = "okay";
+};
+
 &pwr_regulators{
 	vdd-supply = <&vdd>;
 	vdd_3v3_usbfs-supply = <&vdd_usb>;
