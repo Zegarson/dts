@@ -22,20 +22,13 @@
 
 / {
 	model = "STMicroelectronics custom STM32CubeMX board - openstlinux-6.1-yocto-mickledore-mp1-v23.06.21";
-	compatible = "st,stm32mp157d-pin_configuration-mx", "st,stm32mp157";
+	compatible = "st,stm32mp157d-zegarson_test-mx", "st,stm32mp157";
 
 	memory@c0000000 {
 		device_type = "memory";
 		reg = <0xc0000000 0x20000000>;
 
 		/* USER CODE BEGIN memory */
-		aliases {
-			serial0 = &uart4;
-		};
-
-		chosen {
-			stdout-path = "serial0:115200n8";
-		};
 		/* USER CODE END memory */
 	};
 
@@ -49,6 +42,13 @@
 	};
 
 	/* USER CODE BEGIN root */
+	aliases {
+			serial0 = &uart4;
+		};
+
+	chosen {
+		stdout-path = "serial0:115200n8";
+	};
 	/* USER CODE END root */
 
 	clocks{
@@ -114,7 +114,9 @@
 	sdmmc1_pins_mx: sdmmc1_mx-0 {
 		pins1 {
 			pinmux = <STM32_PINMUX('C', 8, AF12)>, /* SDMMC1_D0 */
+					 <STM32_PINMUX('C', 9, AF12)>, /* SDMMC1_D1 */
 					 <STM32_PINMUX('C', 10, AF12)>, /* SDMMC1_D2 */
+					 <STM32_PINMUX('C', 11, AF12)>, /* SDMMC1_D3 */
 					 <STM32_PINMUX('D', 2, AF12)>; /* SDMMC1_CMD */
 			bias-pull-up;
 			drive-push-pull;
@@ -122,7 +124,7 @@
 		};
 		pins2 {
 			pinmux = <STM32_PINMUX('C', 12, AF12)>; /* SDMMC1_CK */
-			bias-pull-up;
+			bias-disable;
 			drive-push-pull;
 			slew-rate = <3>;
 		};
@@ -131,14 +133,16 @@
 	sdmmc1_opendrain_pins_mx: sdmmc1_opendrain_mx-0 {
 		pins1 {
 			pinmux = <STM32_PINMUX('C', 8, AF12)>, /* SDMMC1_D0 */
-					 <STM32_PINMUX('C', 10, AF12)>; /* SDMMC1_D2 */
+					 <STM32_PINMUX('C', 9, AF12)>, /* SDMMC1_D1 */
+					 <STM32_PINMUX('C', 10, AF12)>, /* SDMMC1_D2 */
+					 <STM32_PINMUX('C', 11, AF12)>; /* SDMMC1_D3 */
 			bias-pull-up;
 			drive-push-pull;
 			slew-rate = <1>;
 		};
 		pins2 {
 			pinmux = <STM32_PINMUX('C', 12, AF12)>; /* SDMMC1_CK */
-			bias-pull-up;
+			bias-disable;
 			drive-push-pull;
 			slew-rate = <3>;
 		};
@@ -153,7 +157,9 @@
 	sdmmc1_sleep_pins_mx: sdmmc1_sleep_mx-0 {
 		pins {
 			pinmux = <STM32_PINMUX('C', 8, ANALOG)>, /* SDMMC1_D0 */
+					 <STM32_PINMUX('C', 9, ANALOG)>, /* SDMMC1_D1 */
 					 <STM32_PINMUX('C', 10, ANALOG)>, /* SDMMC1_D2 */
+					 <STM32_PINMUX('C', 11, ANALOG)>, /* SDMMC1_D3 */
 					 <STM32_PINMUX('C', 12, ANALOG)>, /* SDMMC1_CK */
 					 <STM32_PINMUX('D', 2, ANALOG)>; /* SDMMC1_CMD */
 		};

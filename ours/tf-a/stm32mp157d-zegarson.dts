@@ -23,8 +23,8 @@
 /* USER CODE END includes */
 
 / {
-	model = "Zegarson board TF-A testing badzonor 0.0.0 200MHz";
-	compatible = "st,stm32mp157d-pin_configuration-mx", "st,stm32mp157";
+	model = "STMicroelectronics custom STM32CubeMX board - openstlinux-6.1-yocto-mickledore-mp1-v23.06.21";
+	compatible = "st,stm32mp157d-zegarson_test-mx", "st,stm32mp157";
 
 	memory@c0000000 {
 		device_type = "memory";
@@ -35,12 +35,11 @@
 	};
 
 	/* USER CODE BEGIN root */
-
 	vin: vin {
 		compatible = "regulator-fixed";
 		regulator-name = "vin";
-		regulator-min-microvolt = <3500000>;
-		regulator-max-microvolt = <4400000>;
+		regulator-min-microvolt = <3700000>;
+		regulator-max-microvolt = <3700000>;
 		regulator-always-on;
 	};
 
@@ -57,14 +56,12 @@
 		/* USER CODE BEGIN clocks */
 		/* USER CODE END clocks */
 
-
 		clk_hsi: clk-hsi {
 			clock-frequency = <64000000>;
 
 			/* USER CODE BEGIN clk_hsi */
 			/* USER CODE END clk_hsi */
 		};
-
 		clk_lse: clk-lse {
 			clock-frequency = <32768>;
 			st,drive = < LSEDRV_MEDIUM_HIGH >;
@@ -72,7 +69,6 @@
 			/* USER CODE BEGIN clk_lse */
 			/* USER CODE END clk_lse */
 		};
-
 		clk_hse: clk-hse {
 			clock-frequency = <24000000>;
 			st,digbypass;
@@ -85,7 +81,6 @@
 }; /*root*/
 
 &pinctrl {
-
 	sdmmc1_pins_mx: sdmmc1_mx-0 {
 		pins1 {
 			pinmux = <STM32_PINMUX('C', 8, AF12)>, /* SDMMC1_D0 */
@@ -104,7 +99,6 @@
 			slew-rate = <3>;
 		};
 	};
-
 
 	sdmmc2_pins_mx: sdmmc2_mx-0 {
 		pins1 {
@@ -134,7 +128,6 @@
 		};
 	};
 
-
 	sdmmc3_pins_mx: sdmmc3_mx-0 {
 		pins1 {
 			pinmux = <STM32_PINMUX('D', 1, AF10)>, /* SDMMC3_D0 */
@@ -154,7 +147,6 @@
 		};
 	};
 
-
 	uart4_pins_mx: uart4_mx-0 {
 		pins1 {
 			pinmux = <STM32_PINMUX('B', 2, AF8)>; /* UART4_RX */
@@ -173,7 +165,6 @@
 };
 
 &pinctrl_z {
-
 	i2c4_pins_z_mx: i2c4_mx-0 {
 		pins {
 			pinmux = <STM32_PINMUX('Z', 4, AF6)>, /* I2C4_SCL */
@@ -370,24 +361,20 @@
 		DIV(DIV_MCO2, 0)
 	>;
 	st,pll_vco {
-
 		pll1_vco_1300Mhz: pll1-vco-1300Mhz {
 			src = < CLK_PLL12_HSE >;
 			divmn = < 2 80 >;
 			frac = < 0x800 >;
 		};
-
 		pll2_vco_1066Mhz: pll2-vco-1066Mhz {
 			src = < CLK_PLL12_HSE >;
-			divmn = < 2 49 >;
-			frac = < 0x0001 >;
+			divmn = < 2 65 >;
+			frac = < 0x1400 >;
 		};
-
 		pll3_vco_416Mhz: pll3-vco-416Mhz {
 			src = < CLK_PLL3_HSE >;
 			divmn = < 2 51 >;
 		};
-
 		pll4_vco_600Mhz: pll4-vco-600Mhz {
 			src = < CLK_PLL4_HSE >;
 			divmn = < 1 49 >;
@@ -396,13 +383,11 @@
 		/* USER CODE END rcc_st-pll_vco */
 	};
 
-
 	pll1:st,pll@0 {
 		compatible = "st,stm32mp1-pll";
 		reg = <0>;
 
 		st,pll = < &pll1_cfg1 >;
-
 
 		pll1_cfg1: pll1_cfg1 {
 			st,pll_vco = < &pll1_vco_1300Mhz >;
@@ -412,13 +397,11 @@
 		/* USER CODE END pll1 */
 	};
 
-
 	pll2:st,pll@1 {
 		compatible = "st,stm32mp1-pll";
 		reg = <1>;
 
 		st,pll = < &pll2_cfg1 >;
-
 
 		pll2_cfg1: pll2_cfg1 {
 			st,pll_vco = < &pll2_vco_1066Mhz >;
@@ -428,29 +411,25 @@
 		/* USER CODE END pll2 */
 	};
 
-
 	pll3:st,pll@2 {
 		compatible = "st,stm32mp1-pll";
 		reg = <2>;
 
 		st,pll = < &pll3_cfg1 >;
 
-
 		pll3_cfg1: pll3_cfg1 {
 			st,pll_vco = < &pll3_vco_416Mhz >;
-			st,pll_div_pqr = < 1 39 51 >;
+			st,pll_div_pqr = < 1 39 3 >;
 		};
 		/* USER CODE BEGIN pll3 */
 		/* USER CODE END pll3 */
 	};
-
 
 	pll4:st,pll@3 {
 		compatible = "st,stm32mp1-pll";
 		reg = <3>;
 
 		st,pll = < &pll4_cfg1 >;
-
 
 		pll4_cfg1: pll4_cfg1 {
 			st,pll_vco = < &pll4_vco_600Mhz >;
@@ -472,7 +451,7 @@
 	disable-wp;
 	st,neg-edge;
 	bus-width = <4>;
-	vmmc-supply = <&v2v9_emmc>;
+	vmmc-supply = <&v2v9_sd>;
 	/* USER CODE END sdmmc1 */
 };
 
@@ -485,7 +464,7 @@
 	disable-wp;
 	st,neg-edge;
 	bus-width = <8>;
-	vmmc-supply = <&v2v9_emmc>;
+	vmmc-supply = <&v2v9_sd>;
 	/* USER CODE END sdmmc2 */
 };
 
@@ -541,3 +520,4 @@
 	};
 };
 /* USER CODE END addons */
+
