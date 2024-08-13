@@ -20,6 +20,7 @@
 #include "stm32mp15-ddr.dtsi"
 
 /* USER CODE BEGIN includes */
+#include "stm32mp15-pinctrl.dtsi"
 /* USER CODE END includes */
 
 / {
@@ -128,25 +129,6 @@
 		};
 	};
 
-	sdmmc3_pins_mx: sdmmc3_mx-0 {
-		pins1 {
-			pinmux = <STM32_PINMUX('D', 1, AF10)>, /* SDMMC3_D0 */
-					 <STM32_PINMUX('D', 4, AF10)>, /* SDMMC3_D1 */
-					 <STM32_PINMUX('D', 5, AF10)>, /* SDMMC3_D2 */
-					 <STM32_PINMUX('D', 7, AF10)>, /* SDMMC3_D3 */
-					 <STM32_PINMUX('F', 1, AF9)>; /* SDMMC3_CMD */
-			bias-disable;
-			drive-push-pull;
-			slew-rate = <1>;
-		};
-		pins2 {
-			pinmux = <STM32_PINMUX('G', 15, AF10)>; /* SDMMC3_CK */
-			bias-disable;
-			drive-push-pull;
-			slew-rate = <3>;
-		};
-	};
-
 	uart4_pins_mx: uart4_mx-0 {
 		pins1 {
 			pinmux = <STM32_PINMUX('B', 2, AF8)>; /* UART4_RX */
@@ -219,7 +201,7 @@
 			vddcore: buck1 {
 				regulator-name = "vddcore";
 				regulator-min-microvolt = <1200000>;
-				regulator-max-microvolt = <1350000>;
+				regulator-max-microvolt = <1200000>;
 				regulator-always-on;
 				regulator-initial-mode = <0>;
 				regulator-over-current-protection;
@@ -333,6 +315,7 @@
 	status = "okay";
 
 	/* USER CODE BEGIN rcc */
+	compatible = "st,stm32mp1-rcc-secure", "st,stm32mp1-rcc", "syscon";
 	/* USER CODE END rcc */
 
 	st,clksrc = <
@@ -464,19 +447,9 @@
 	disable-wp;
 	st,neg-edge;
 	bus-width = <8>;
-	vmmc-supply = <&v2v9_sd>;
+	vmmc-supply = <&v2v9_emmc>;
 	/* USER CODE END sdmmc2 */
 };
-
-&sdmmc3{
-	pinctrl-names = "default";
-	pinctrl-0 = <&sdmmc3_pins_mx>;
-	status = "okay";
-
-	/* USER CODE BEGIN sdmmc2 */
-	/* USER CODE END sdmmc2 */
-};
-
 
 &uart4{
 	pinctrl-names = "default";
@@ -516,21 +489,19 @@
 };
 
 /* USER CODE BEGIN addons */
-&cpu0 {
-	cpu-supply = <&vddcore>;
-};
-
-&cpu1 {
-	cpu-supply = <&vddcore>;
-};
-
-&rng1 {
+&iwdg1{
 	status = "okay";
+
+	/* USER CODE BEGIN iwdg1 */
+	timeout-sec = <32>;
+	/* USER CODE END iwdg1 */
 };
 
-&pwr_regulators{
-	vdd-supply = <&vdd>;
-	vdd_3v3_usbfs-supply = <&vdd_usb>;
+&hash1{
+	status = "okay";
+
+	/* USER CODE BEGIN hash1 */
+	/* USER CODE END hash1 */
 };
 
 &bsec {
@@ -540,6 +511,27 @@
 		reg = <0xec 0x4>;
 		st,non-secure-otp;
 	};
+};
+
+&cpu0 {
+	cpu-supply = <&vddcore>;
+};
+
+&cpu1 {
+	cpu-supply = <&vddcore>;
+};
+
+&pwr_regulators{
+	vdd-supply = <&vdd>;
+	vdd_3v3_usbfs-supply = <&vdd_usb>;
+};
+
+&rng1 {
+	status = "okay";
+};
+
+&rtc{
+	status = "okay";
 };
 /* USER CODE END addons */
 
