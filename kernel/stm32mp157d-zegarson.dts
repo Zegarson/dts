@@ -647,18 +647,21 @@
 
 			bst_out: boost {
 				regulator-name = "bst_out";
-				/*du   pa*/
+				regulator-always-on;
 			};
 
 
 			vbus_otg: pwr_sw1 {
 				regulator-name = "vbus_otg";
+				//regulator-over-current-protection;
 			};
 
 
 			vbus_sw: pwr_sw2 {
 				regulator-name = "vbus_sw";
-				regulator-active-discharge = <1>;
+				regulator-always-on;
+				//regulator-over-current-protection;
+				//regulator-active-discharge = <1>;
 			};
 		};
 	};
@@ -836,6 +839,7 @@
 	status = "okay";
 
 	/* USER CODE BEGIN usbh_ehci */
+	phys = <&usbphyc_port0>;
 	/* USER CODE END usbh_ehci */
 };
 
@@ -850,6 +854,7 @@
 	status = "okay";
 
 	/* USER CODE BEGIN usbotg_hs */
+	phys = <&usbphyc_port1 0>;
 	/* USER CODE END usbotg_hs */
 };
 
@@ -864,6 +869,7 @@
 	status = "okay";
 
 	/* USER CODE BEGIN usbphyc_port0 */
+	phy-supply = <&vdd_usb>;
 	/* USER CODE END usbphyc_port0 */
 };
 
@@ -871,6 +877,7 @@
 	status = "okay";
 
 	/* USER CODE BEGIN usbphyc_port1 */
+	phy-supply = <&vdd_usb>;
 	/* USER CODE END usbphyc_port1 */
 };
 
