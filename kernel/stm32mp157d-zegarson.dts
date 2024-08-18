@@ -63,6 +63,11 @@
 	chosen {
 		stdout-path = "serial0:115200n8";
 	};
+
+	wifi_pwrseq: wifi-pwrseq {
+		compatible = "mmc-pwrseq-simple";
+		reset-gpios = <&gpiof 2 GPIO_ACTIVE_LOW>;
+	};
 	/* USER CODE END root */
 
 	clocks{
@@ -791,6 +796,19 @@
 	status = "okay";
 
 	/* USER CODE BEGIN sdmmc3 */
+	non-removable;
+	cap-sdio-irq;
+	st,neg-edge;
+	bus-width = <4>;
+	vmmc-supply = <&v3v3>;
+	mmc-pwrseq = <&wifi_pwrseq>;
+	#address-cells = <1>;
+	#size-cells = <0>;
+
+	brcmf: bcrmf@1 {
+		reg = <1>;
+		compatible = "brcm,bcm4329-fmac";
+	};
 	/* USER CODE END sdmmc3 */
 };
 
@@ -871,6 +889,14 @@
 
 	/* USER CODE BEGIN usbphyc_port0 */
 	phy-supply = <&vdd_usb>;
+	st,tune-hs-dc-level = <2>;
+	st,enable-fs-rftime-tuning;
+	st,enable-hs-rftime-reduction;
+	st,trim-hs-current = <15>;
+	st,trim-hs-impedance = <1>;
+	st,tune-squelch-level = <3>;
+	st,tune-hs-rx-offset = <2>;
+	st,no-lsfs-sc;
 	/* USER CODE END usbphyc_port0 */
 };
 
@@ -879,6 +905,14 @@
 
 	/* USER CODE BEGIN usbphyc_port1 */
 	phy-supply = <&vdd_usb>;
+	st,tune-hs-dc-level = <2>;
+	st,enable-fs-rftime-tuning;
+	st,enable-hs-rftime-reduction;
+	st,trim-hs-current = <15>;
+	st,trim-hs-impedance = <1>;
+	st,tune-squelch-level = <3>;
+	st,tune-hs-rx-offset = <2>;
+	st,no-lsfs-sc;
 	/* USER CODE END usbphyc_port1 */
 };
 
