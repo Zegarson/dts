@@ -847,6 +847,7 @@
 	status = "okay";
 
 	/* USER CODE BEGIN usbh_ohci */
+	phys = <&usbphyc_port0>;
 	/* USER CODE END usbh_ohci */
 };
 
