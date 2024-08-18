@@ -531,5 +531,20 @@
 	/* USER CODE BEGIN uart4 */
 	/* USER CODE END uart4 */
 };
-/* USER CODE END addons */
 
+&usbphyc_port0{
+	status = "okay";
+
+	/* USER CODE BEGIN usbphyc_port0 */
+	phy-supply = <&vdd_usb>;
+	/* USER CODE END usbphyc_port0 */
+};
+
+&usbphyc_port1{
+	status = "okay";
+
+	/* USER CODE BEGIN usbphyc_port1 */
+	phy-supply = <&vdd_usb>;
+	/* USER CODE END usbphyc_port1 */
+};
+/* USER CODE END addons */
