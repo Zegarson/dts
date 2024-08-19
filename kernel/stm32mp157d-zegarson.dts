@@ -737,7 +737,7 @@
 	status = "okay";
 
 	/* USER CODE BEGIN rtc */
-	st,lsco = <RTC_OUT1>;
+	st,lsco = <RTC_OUT2_RMP>;
 	/* USER CODE END rtc */
 };
 
