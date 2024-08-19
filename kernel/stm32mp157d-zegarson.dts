@@ -69,6 +69,14 @@
 		compatible = "mmc-pwrseq-simple";
 		reset-gpios = <&gpiof 2 GPIO_ACTIVE_LOW>;
 	};
+
+	cpu0-opp-table  {
+		/delete-node/ opp-400000000;
+		/delete-node/ opp-800000000;
+		opp-650000000 {
+			opp-supported-hw = <0x03>;
+		};
+	};
 	/* USER CODE END root */
 
 	clocks{

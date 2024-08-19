@@ -50,6 +50,13 @@
 		/* USER CODE END reserved-memory */
 	};
 
+	cpu0-opp-table  {
+		/delete-node/ opp-400000000;
+		/delete-node/ opp-800000000;
+		opp-650000000 {
+			opp-supported-hw = <0x03>;
+		};
+	};
 	/* USER CODE BEGIN root */
 	vin: vin {
 		compatible = "regulator-fixed";
