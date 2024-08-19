@@ -52,8 +52,8 @@
 	vin: vin {
 		compatible = "regulator-fixed";
 		regulator-name = "vin";
-		regulator-min-microvolt = <3700000>;
-		regulator-max-microvolt = <3700000>;
+		regulator-min-microvolt = <3200000>;
+		regulator-max-microvolt = <4400000>;
 		regulator-always-on;
 	};
 
