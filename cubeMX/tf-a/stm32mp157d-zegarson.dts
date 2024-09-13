@@ -49,7 +49,6 @@
 		};
 		clk_lse: clk-lse {
 			clock-frequency = <32768>;
-			st,drive = < LSEDRV_MEDIUM_HIGH >;
 
 			/* USER CODE BEGIN clk_lse */
 			/* USER CODE END clk_lse */
@@ -351,4 +350,3 @@
 
 /* USER CODE BEGIN addons */
 /* USER CODE END addons */
-

@@ -25,7 +25,7 @@
 
 / {
 	model = "STMicroelectronics custom STM32CubeMX board - openstlinux-6.1-yocto-mickledore-mp1-v23.06.21";
-	compatible = "st,stm32mp157d-zegarson_test-mx", "st,stm32mp157";
+	compatible = "st,stm32mp157d-zegarson-mx", "st,stm32mp157";
 
 	memory@c0000000 {
 		device_type = "memory";
@@ -39,8 +39,8 @@
 	vin: vin {
 		compatible = "regulator-fixed";
 		regulator-name = "vin";
-		regulator-min-microvolt = <3700000>;
-		regulator-max-microvolt = <3700000>;
+		regulator-min-microvolt = <3200000>;
+		regulator-max-microvolt = <4400000>;
 		regulator-always-on;
 	};
 

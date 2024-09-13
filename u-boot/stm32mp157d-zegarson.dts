@@ -20,11 +20,12 @@
 #include <dt-bindings/gpio/gpio.h>
 #include <dt-bindings/mfd/st,stpmic1.h>
 #include "stm32mp157d-zegarson-scmi.dtsi"
+#include <dt-bindings/rtc/rtc-stm32.h>
 /* USER CODE END includes */
 
 / {
 	model = "STMicroelectronics custom STM32CubeMX board - openstlinux-6.1-yocto-mickledore-mp1-v23.06.21";
-	compatible = "st,stm32mp157d-zegarson_test-mx", "st,stm32mp157";
+	compatible = "st,stm32mp157d-zegarson-mx", "st,stm32mp157";
 
 	memory@c0000000 {
 		device_type = "memory";
@@ -49,12 +50,19 @@
 		/* USER CODE END reserved-memory */
 	};
 
+	cpu0-opp-table  {
+		/delete-node/ opp-400000000;
+		/delete-node/ opp-800000000;
+		opp-650000000 {
+			opp-supported-hw = <0x03>;
+		};
+	};
 	/* USER CODE BEGIN root */
 	vin: vin {
 		compatible = "regulator-fixed";
 		regulator-name = "vin";
-		regulator-min-microvolt = <3700000>;
-		regulator-max-microvolt = <3700000>;
+		regulator-min-microvolt = <3200000>;
+		regulator-max-microvolt = <4400000>;
 		regulator-always-on;
 	};
 
@@ -730,6 +738,7 @@
 	status = "okay";
 
 	/* USER CODE BEGIN rtc */
+	st,lsco = <RTC_OUT2_RMP>;
 	/* USER CODE END rtc */
 };
 
@@ -837,6 +846,7 @@
 	status = "okay";
 
 	/* USER CODE BEGIN usbh_ehci */
+	phys = <&usbphyc_port0>;
 	/* USER CODE END usbh_ehci */
 };
 
@@ -870,6 +880,14 @@
 
 	/* USER CODE BEGIN usbphyc_port0 */
 	phy-supply = <&vdd_usb>;
+	st,tune-hs-dc-level = <2>;
+	st,enable-fs-rftime-tuning;
+	st,enable-hs-rftime-reduction;
+	st,trim-hs-current = <15>;
+	st,trim-hs-impedance = <1>;
+	st,tune-squelch-level = <3>;
+	st,tune-hs-rx-offset = <2>;
+	st,no-lsfs-sc;
 	/* USER CODE END usbphyc_port0 */
 };
 
@@ -878,6 +896,14 @@
 
 	/* USER CODE BEGIN usbphyc_port1 */
 	phy-supply = <&vdd_usb>;
+	st,tune-hs-dc-level = <2>;
+	st,enable-fs-rftime-tuning;
+	st,enable-hs-rftime-reduction;
+	st,trim-hs-current = <15>;
+	st,trim-hs-impedance = <1>;
+	st,tune-squelch-level = <3>;
+	st,tune-hs-rx-offset = <2>;
+	st,no-lsfs-sc;
 	/* USER CODE END usbphyc_port1 */
 };
 

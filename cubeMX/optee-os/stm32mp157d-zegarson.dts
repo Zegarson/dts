@@ -56,7 +56,6 @@
 		};
 		clk_lse: clk-lse {
 			clock-frequency = <32768>;
-			st,drive = < LSEDRV_MEDIUM_HIGH >;
 
 			/* USER CODE BEGIN clk_lse */
 			/* USER CODE END clk_lse */
@@ -181,7 +180,7 @@
 		CLK_MPU_PLL1P
 		CLK_AXI_PLL2P
 		CLK_MCU_PLL3P
-		CLK_RTC_LSE
+		CLK_RTC_LSI
 		CLK_MCO1_DISABLED
 		CLK_MCO2_DISABLED
 	>;
@@ -297,4 +296,3 @@
 
 /* USER CODE BEGIN addons */
 /* USER CODE END addons */
-

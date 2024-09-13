@@ -20,11 +20,12 @@
 #include <dt-bindings/gpio/gpio.h>
 #include <dt-bindings/mfd/st,stpmic1.h>
 #include "stm32mp157d-zegarson-scmi.dtsi"
+#include <dt-bindings/rtc/rtc-stm32.h>
 /* USER CODE END includes */
 
 / {
 	model = "STMicroelectronics custom STM32CubeMX board - openstlinux-6.1-yocto-mickledore-mp1-v23.06.21";
-	compatible = "st,stm32mp157d-zegarson_test-mx", "st,stm32mp157";
+	compatible = "st,stm32mp157d-zegarson-mx", "st,stm32mp157";
 
 	memory@c0000000 {
 		device_type = "memory";
@@ -51,8 +52,8 @@
 	vin: vin {
 		compatible = "regulator-fixed";
 		regulator-name = "vin";
-		regulator-min-microvolt = <3700000>;
-		regulator-max-microvolt = <3700000>;
+		regulator-min-microvolt = <3200000>;
+		regulator-max-microvolt = <4400000>;
 		regulator-always-on;
 	};
 
@@ -62,6 +63,19 @@
 
 	chosen {
 		stdout-path = "serial0:115200n8";
+	};
+
+	wifi_pwrseq: wifi-pwrseq {
+		compatible = "mmc-pwrseq-simple";
+		reset-gpios = <&gpiof 2 GPIO_ACTIVE_LOW>;
+	};
+
+	cpu0-opp-table  {
+		/delete-node/ opp-400000000;
+		/delete-node/ opp-800000000;
+		opp-650000000 {
+			opp-supported-hw = <0x03>;
+		};
 	};
 	/* USER CODE END root */
 
@@ -647,17 +661,21 @@
 
 			bst_out: boost {
 				regulator-name = "bst_out";
+				regulator-always-on;
 			};
 
 
 			vbus_otg: pwr_sw1 {
 				regulator-name = "vbus_otg";
+				//regulator-over-current-protection;
 			};
 
 
 			vbus_sw: pwr_sw2 {
 				regulator-name = "vbus_sw";
-				regulator-active-discharge = <1>;
+				regulator-always-on;
+				//regulator-over-current-protection;
+				//regulator-active-discharge = <1>;
 			};
 		};
 	};
@@ -728,6 +746,7 @@
 	status = "okay";
 
 	/* USER CODE BEGIN rtc */
+	st,lsco = <RTC_OUT2_RMP>;
 	/* USER CODE END rtc */
 };
 
@@ -787,6 +806,19 @@
 	status = "okay";
 
 	/* USER CODE BEGIN sdmmc3 */
+	non-removable;
+	cap-sdio-irq;
+	st,neg-edge;
+	bus-width = <4>;
+	vmmc-supply = <&v3v3>;
+	mmc-pwrseq = <&wifi_pwrseq>;
+	#address-cells = <1>;
+	#size-cells = <0>;
+
+	brcmf: bcrmf@1 {
+		reg = <1>;
+		compatible = "brcm,bcm4329-fmac";
+	};
 	/* USER CODE END sdmmc3 */
 };
 
@@ -835,6 +867,7 @@
 	status = "okay";
 
 	/* USER CODE BEGIN usbh_ehci */
+	phys = <&usbphyc_port0>;
 	/* USER CODE END usbh_ehci */
 };
 
@@ -842,6 +875,7 @@
 	status = "okay";
 
 	/* USER CODE BEGIN usbh_ohci */
+	phys = <&usbphyc_port0>;
 	/* USER CODE END usbh_ohci */
 };
 
@@ -849,6 +883,8 @@
 	status = "okay";
 
 	/* USER CODE BEGIN usbotg_hs */
+	phys = <&usbphyc_port1 0>;
+	phy-names = "usb2-phy";
 	/* USER CODE END usbotg_hs */
 };
 
@@ -863,6 +899,15 @@
 	status = "okay";
 
 	/* USER CODE BEGIN usbphyc_port0 */
+	phy-supply = <&vdd_usb>;
+	st,tune-hs-dc-level = <2>;
+	st,enable-fs-rftime-tuning;
+	st,enable-hs-rftime-reduction;
+	st,trim-hs-current = <15>;
+	st,trim-hs-impedance = <1>;
+	st,tune-squelch-level = <3>;
+	st,tune-hs-rx-offset = <2>;
+	st,no-lsfs-sc;
 	/* USER CODE END usbphyc_port0 */
 };
 
@@ -870,6 +915,15 @@
 	status = "okay";
 
 	/* USER CODE BEGIN usbphyc_port1 */
+	phy-supply = <&vdd_usb>;
+	st,tune-hs-dc-level = <2>;
+	st,enable-fs-rftime-tuning;
+	st,enable-hs-rftime-reduction;
+	st,trim-hs-current = <15>;
+	st,trim-hs-impedance = <1>;
+	st,tune-squelch-level = <3>;
+	st,tune-hs-rx-offset = <2>;
+	st,no-lsfs-sc;
 	/* USER CODE END usbphyc_port1 */
 };
 
