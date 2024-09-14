@@ -15,6 +15,9 @@
 / {
 
 	/* USER CODE BEGIN root */
+	config{
+		u-boot,mmc-env-partition = "u-boot-env";
+	};
 	/* USER CODE END root */
 
 }; /*root*/
