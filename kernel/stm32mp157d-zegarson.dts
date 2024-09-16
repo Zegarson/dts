@@ -94,8 +94,8 @@
 	vin: vin {
 		compatible = "regulator-fixed";
 		regulator-name = "vin";
-		regulator-min-microvolt = <3200000>;
-		regulator-max-microvolt = <4400000>;
+		regulator-min-microvolt = <3700000>;
+		regulator-max-microvolt = <3700000>;
 		regulator-always-on;
 	};
 
@@ -110,14 +110,6 @@
 	wifi_pwrseq: wifi-pwrseq {
 		compatible = "mmc-pwrseq-simple";
 		reset-gpios = <&gpiof 2 GPIO_ACTIVE_LOW>;
-	};
-
-	cpu0-opp-table  {
-		/delete-node/ opp-400000000;
-		/delete-node/ opp-800000000;
-		opp-650000000 {
-			opp-supported-hw = <0x03>;
-		};
 	};
 	/* USER CODE END root */
 
