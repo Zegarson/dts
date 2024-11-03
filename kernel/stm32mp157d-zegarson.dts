@@ -19,7 +19,7 @@
 /* USER CODE BEGIN includes */
 #include <dt-bindings/gpio/gpio.h>
 #include <dt-bindings/mfd/st,stpmic1.h>
-#include "stm32mp157d-zegarson-scmi.dtsi"
+#include "stm32mp157a-dk1-scmi.dtsi"
 #include <dt-bindings/rtc/rtc-stm32.h>
 /* USER CODE END includes */
 
@@ -41,8 +41,50 @@
 		ranges;
 
 		/* USER CODE BEGIN reserved-memory */
+		mcuram2:mcuram2@10000000{
+			compatible = "shared-dma-pool";
+			reg = <0x10000000 0x40000>;
+			no-map;
+		};
+
+		vdev0vring0:vdev0vring0@10040000{
+			compatible = "shared-dma-pool";
+			reg = <0x10040000 0x1000>;
+			no-map;
+		};
+
+		vdev0vring1:vdev0vring1@10041000{
+			compatible = "shared-dma-pool";
+			reg = <0x10041000 0x1000>;
+			no-map;
+		};
+
+		vdev0buffer:vdev0buffer@10042000{
+			compatible = "shared-dma-pool";
+			reg = <0x10042000 0x4000>;
+			no-map;
+		};
+
+		mcu_rsc_table:mcu-rsc-table@10048000{
+			compatible = "shared-dma-pool";
+			reg = <0x10048000 0x8000>;
+			no-map;
+		};
+
+		mcuram:mcuram@30000000{
+			compatible = "shared-dma-pool";
+			reg = <0x30000000 0x40000>;
+			no-map;
+		};
+
+		retram:retram@38000000{
+			compatible = "shared-dma-pool";
+			reg = <0x38000000 0x10000>;
+			no-map;
+		};
+		
 		gpu_reserved:gpu@d4000000{
-			reg = <0xd4000000 0x4000000>;
+			reg = <0xd4000000 0x2000000>;
 			no-map;
 		};
 		/* USER CODE END reserved-memory */
@@ -52,8 +94,8 @@
 	vin: vin {
 		compatible = "regulator-fixed";
 		regulator-name = "vin";
-		regulator-min-microvolt = <3200000>;
-		regulator-max-microvolt = <4400000>;
+		regulator-min-microvolt = <3700000>;
+		regulator-max-microvolt = <3700000>;
 		regulator-always-on;
 	};
 
@@ -68,14 +110,6 @@
 	wifi_pwrseq: wifi-pwrseq {
 		compatible = "mmc-pwrseq-simple";
 		reset-gpios = <&gpiof 2 GPIO_ACTIVE_LOW>;
-	};
-
-	cpu0-opp-table  {
-		/delete-node/ opp-400000000;
-		/delete-node/ opp-800000000;
-		opp-650000000 {
-			opp-supported-hw = <0x03>;
-		};
 	};
 	/* USER CODE END root */
 
@@ -436,6 +470,23 @@
 		};
 	};
 
+	i2c6_pins_z_mx: i2c6_mx-0 {
+		pins {
+			pinmux = <STM32_PINMUX('Z', 1, AF2)>, /* I2C6_SDA */
+					 <STM32_PINMUX('Z', 6, AF2)>; /* I2C6_SCL */
+			bias-disable;
+			drive-open-drain;
+			slew-rate = <0>;
+		};
+	};
+
+	i2c6_sleep_pins_z_mx: i2c6_sleep_mx-0 {
+		pins {
+			pinmux = <STM32_PINMUX('Z', 1, ANALOG)>, /* I2C6_SDA */
+					 <STM32_PINMUX('Z', 6, ANALOG)>; /* I2C6_SCL */
+		};
+	};
+
 	i2s1_pins_z_mx: i2s1_mx-0 {
 		pins {
 			pinmux = <STM32_PINMUX('Z', 0, AF5)>, /* I2S1_CK */
@@ -463,6 +514,13 @@
 	status = "okay";
 
 	/* USER CODE BEGIN m4_rproc */
+	memory-region = <&retram>, <&mcuram>, <&mcuram2>, <&vdev0vring0>,
+			<&vdev0vring1>, <&vdev0buffer>, <&mcu_rsc_table>;
+	mboxes = <&ipcc 0>, <&ipcc 1>, <&ipcc 2>, <&ipcc 3>;
+	mbox-names = "vq0", "vq1", "shutdown", "detach";
+	interrupt-parent = <&exti>;
+	interrupts = <68 1>;
+	wakeup-source;
 	/* USER CODE END m4_rproc */
 
 	m4_system_resources{
@@ -678,8 +736,26 @@
 				//regulator-active-discharge = <1>;
 			};
 		};
+
+		onkey {
+			compatible = "st,stpmic1-onkey";
+			interrupts = <IT_PONKEY_F 0>, <IT_PONKEY_R 0>;
+			interrupt-names = "onkey-falling", "onkey-rising";
+			power-off-time-sec = <3>;
+			status = "okay";
+		};
 	};
 	/* USER CODE END i2c4 */
+};
+
+&i2c6{
+	pinctrl-names = "default", "sleep";
+	pinctrl-0 = <&i2c6_pins_z_mx>;
+	pinctrl-1 = <&i2c6_sleep_pins_z_mx>;
+	status = "okay";
+
+	/* USER CODE BEGIN i2c6 */
+	/* USER CODE END i2c6 */
 };
 
 &i2s1{
@@ -775,11 +851,12 @@
 	status = "okay";
 
 	/* USER CODE BEGIN sdmmc1 */
-	broken-cd;
+	cd-gpios = <&gpioh 12 (GPIO_ACTIVE_LOW | GPIO_PULL_UP)>;
 	disable-wp;
 	st,neg-edge;
 	bus-width = <4>;
 	vmmc-supply = <&v2v9_sd>;
+	no-1-8-v;
 	/* USER CODE END sdmmc1 */
 };
 
@@ -795,6 +872,10 @@
 	st,neg-edge;
 	bus-width = <8>;
 	vmmc-supply = <&v2v9_emmc>;
+	non-removable;
+	mmc-hs400-1_8v; 
+	max-frequency = <104000000>;
+	vqmmc-supply = <&vdd>; 
 	/* USER CODE END sdmmc2 */
 };
 
@@ -953,6 +1034,10 @@
 
 	/* USER CODE BEGIN hash1 */
 	/* USER CODE END hash1 */
+};
+
+&ipcc {
+	status = "okay";
 };
 /* USER CODE END addons */
 

@@ -44,8 +44,32 @@
 		ranges;
 
 		/* USER CODE BEGIN reserved-memory */
+		mcusram1:mcuram@10000000{
+			compatible = "shared-dma-pool";
+			reg = <0x10000000 0x20000>;
+			no-map;
+		};
+
+		mcusram2:mcuram@10020000{
+			compatible = "shared-dma-pool";
+			reg = <0x10020000 0x20000>;
+			no-map;
+		};
+
+		mcusram3:mcuram@10040000{
+			compatible = "shared-dma-pool";
+			reg = <0x10040000 0x10000>;
+			no-map;
+		};
+
+		retram:retram@38000000{
+			compatible = "shared-dma-pool";
+			reg = <0x38000000 0x10000>;
+			no-map;
+		};
+		
 		gpu_reserved:gpu@d4000000{
-			reg = <0xd4000000 0x4000000>;
+			reg = <0xd4000000 0x2000000>;
 			no-map;
 		};	
 		/* USER CODE END reserved-memory */
@@ -55,8 +79,8 @@
 	vin: vin {
 		compatible = "regulator-fixed";
 		regulator-name = "vin";
-		regulator-min-microvolt = <3200000>;
-		regulator-max-microvolt = <4400000>;
+		regulator-min-microvolt = <3700000>;
+		regulator-max-microvolt = <3700000>;
 		regulator-always-on;
 	};
 	
@@ -69,8 +93,6 @@
 	};
 
 	cpu0-opp-table  {
-		/delete-node/ opp-400000000;
-		/delete-node/ opp-800000000;
 		opp-650000000 {
 			opp-supported-hw = <0x03>;
 		};
@@ -170,6 +192,7 @@
 	DECPROT(STM32MP1_ETZPC_DMAMUX_ID, DECPROT_NS_RW, DECPROT_UNLOCK)
 	DECPROT(STM32MP1_ETZPC_HASH1_ID, DECPROT_NS_RW, DECPROT_UNLOCK)
 	DECPROT(STM32MP1_ETZPC_I2C4_ID, DECPROT_NS_RW, DECPROT_UNLOCK)
+	DECPROT(STM32MP1_ETZPC_I2C6_ID, DECPROT_NS_RW, DECPROT_UNLOCK)
 	DECPROT(STM32MP1_ETZPC_SPI1_ID, DECPROT_NS_RW, DECPROT_UNLOCK)
 	DECPROT(STM32MP1_ETZPC_SPI2_ID, DECPROT_NS_RW, DECPROT_UNLOCK)
 	DECPROT(STM32MP1_ETZPC_SAI4_ID, DECPROT_NS_RW, DECPROT_UNLOCK)
