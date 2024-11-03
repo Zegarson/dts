@@ -430,7 +430,6 @@
 	status = "okay";
 
 	/* USER CODE BEGIN sdmmc1 */
-	cd-gpios = <&gpioh 12 (GPIO_ACTIVE_LOW | GPIO_PULL_UP)>;
 	disable-wp;
 	st,neg-edge;
 	bus-width = <4>;
@@ -450,8 +449,7 @@
 	bus-width = <8>;
 	vmmc-supply = <&v2v9_emmc>;
 	non-removable;
-	mmc-hs400-1_8v; 
-	max-frequency = <104000000>;
+	mmc-ddr-1_8v;
 	vqmmc-supply = <&vdd>; 
 	/* USER CODE END sdmmc2 */
 };

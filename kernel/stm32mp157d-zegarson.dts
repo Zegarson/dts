@@ -873,8 +873,7 @@
 	bus-width = <8>;
 	vmmc-supply = <&v2v9_emmc>;
 	non-removable;
-	mmc-hs400-1_8v; 
-	max-frequency = <104000000>;
+	mmc-ddr-1_8v;
 	vqmmc-supply = <&vdd>; 
 	/* USER CODE END sdmmc2 */
 };
