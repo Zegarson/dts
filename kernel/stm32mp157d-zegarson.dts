@@ -736,6 +736,14 @@
 				//regulator-active-discharge = <1>;
 			};
 		};
+
+		onkey {
+			compatible = "st,stpmic1-onkey";
+			interrupts = <IT_PONKEY_F 0>, <IT_PONKEY_R 0>;
+			interrupt-names = "onkey-falling", "onkey-rising";
+			power-off-time-sec = <3>;
+			status = "okay";
+		};
 	};
 	/* USER CODE END i2c4 */
 };
@@ -843,11 +851,12 @@
 	status = "okay";
 
 	/* USER CODE BEGIN sdmmc1 */
-	broken-cd;
+	cd-gpios = <&gpioh 12 (GPIO_ACTIVE_LOW | GPIO_PULL_UP)>;
 	disable-wp;
 	st,neg-edge;
 	bus-width = <4>;
 	vmmc-supply = <&v2v9_sd>;
+	no-1-8-v;
 	/* USER CODE END sdmmc1 */
 };
 
@@ -863,6 +872,10 @@
 	st,neg-edge;
 	bus-width = <8>;
 	vmmc-supply = <&v2v9_emmc>;
+	non-removable;
+	mmc-hs400-1_8v; 
+	max-frequency = <104000000>;
+	vqmmc-supply = <&vdd>; 
 	/* USER CODE END sdmmc2 */
 };
 
@@ -1021,6 +1034,10 @@
 
 	/* USER CODE BEGIN hash1 */
 	/* USER CODE END hash1 */
+};
+
+&ipcc {
+	status = "okay";
 };
 /* USER CODE END addons */
 
