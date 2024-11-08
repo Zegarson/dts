@@ -363,6 +363,7 @@
 
 			vbus_otg: pwr_sw1 {
 				regulator-name = "vbus_otg";
+				regulator-active-discharge = <1>;
 			};
 
 
@@ -396,7 +397,7 @@
 		CLK_STGEN_HSE
 		CLK_SPI2S1_PLL4P
 		CLK_SPI2S23_PLL4P
-		CLK_SPI45_HSE
+		CLK_SPI45_PCLK2
 		CLK_I2C46_HSI
 		CLK_SDMMC3_PLL4P
 		CLK_USBO_USBPHY
@@ -435,7 +436,7 @@
 		};
 		pll3_vco_416Mhz: pll3-vco-416Mhz {
 			src = < CLK_PLL3_HSE >;
-			divmn = < 2 51 >;
+			divmn = < 2 49 >;
 		};
 		pll4_vco_600Mhz: pll4-vco-600Mhz {
 			src = < CLK_PLL4_HSE >;

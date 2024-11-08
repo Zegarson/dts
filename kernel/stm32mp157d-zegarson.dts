@@ -238,14 +238,14 @@
 					 <STM32_PINMUX('C', 7, AF10)>; /* SDMMC2_D7 */
 			bias-pull-up;
 			drive-push-pull;
-			slew-rate = <1>;
+			slew-rate = <3>;
 		};
 		pins2 {
 			pinmux = <STM32_PINMUX('B', 14, AF9)>, /* SDMMC2_D0 */
 					 <STM32_PINMUX('G', 6, AF10)>; /* SDMMC2_CMD */
 			bias-disable;
 			drive-push-pull;
-			slew-rate = <1>;
+			slew-rate = <3>;
 		};
 		pins3 {
 			pinmux = <STM32_PINMUX('E', 3, AF9)>; /* SDMMC2_CK */
@@ -266,13 +266,13 @@
 					 <STM32_PINMUX('C', 7, AF10)>; /* SDMMC2_D7 */
 			bias-pull-up;
 			drive-push-pull;
-			slew-rate = <1>;
+			slew-rate = <3>;
 		};
 		pins2 {
 			pinmux = <STM32_PINMUX('B', 14, AF9)>; /* SDMMC2_D0 */
 			bias-disable;
 			drive-push-pull;
-			slew-rate = <1>;
+			slew-rate = <3>;
 		};
 		pins3 {
 			pinmux = <STM32_PINMUX('E', 3, AF9)>; /* SDMMC2_CK */
@@ -284,7 +284,7 @@
 			pinmux = <STM32_PINMUX('G', 6, AF10)>; /* SDMMC2_CMD */
 			bias-disable;
 			drive-open-drain;
-			slew-rate = <1>;
+			slew-rate = <3>;
 		};
 	};
 
@@ -725,7 +725,9 @@
 
 			vbus_otg: pwr_sw1 {
 				regulator-name = "vbus_otg";
+				regulator-always-on;
 				//regulator-over-current-protection;
+				regulator-active-discharge = <1>;
 			};
 
 
@@ -733,7 +735,7 @@
 				regulator-name = "vbus_sw";
 				regulator-always-on;
 				//regulator-over-current-protection;
-				//regulator-active-discharge = <1>;
+				regulator-active-discharge = <1>;
 			};
 		};
 
@@ -873,7 +875,7 @@
 	bus-width = <8>;
 	vmmc-supply = <&v2v9_emmc>;
 	non-removable;
-	mmc-ddr-1_8v;
+	mmc-hs400-1_8v;
 	vqmmc-supply = <&vdd>; 
 	/* USER CODE END sdmmc2 */
 };
@@ -965,6 +967,7 @@
 	/* USER CODE BEGIN usbotg_hs */
 	phys = <&usbphyc_port1 0>;
 	phy-names = "usb2-phy";
+	dr_mode = "host";
 	/* USER CODE END usbotg_hs */
 };
 

@@ -261,13 +261,13 @@
 					 <STM32_PINMUX('C', 7, AF10)>; /* SDMMC2_D7 */
 			bias-pull-up;
 			drive-push-pull;
-			slew-rate = <1>;
+			slew-rate = <3>;
 		};
 		pins2 {
 			pinmux = <STM32_PINMUX('B', 14, AF9)>; /* SDMMC2_D0 */
 			bias-disable;
 			drive-push-pull;
-			slew-rate = <1>;
+			slew-rate = <3>;
 		};
 		pins3 {
 			pinmux = <STM32_PINMUX('E', 3, AF9)>; /* SDMMC2_CK */
@@ -279,7 +279,7 @@
 			pinmux = <STM32_PINMUX('G', 6, AF10)>; /* SDMMC2_CMD */
 			bias-disable;
 			drive-open-drain;
-			slew-rate = <1>;
+			slew-rate = <3>;
 		};
 	};
 
@@ -719,6 +719,7 @@
 
 			vbus_otg: pwr_sw1 {
 				regulator-name = "vbus_otg";
+				regulator-active-discharge = <1>;
 			};
 
 
@@ -864,7 +865,7 @@
 	bus-width = <8>;
 	vmmc-supply = <&v2v9_emmc>;
 	non-removable;
-	mmc-ddr-1_8v;
+	mmc-hs400-1_8v;
 	vqmmc-supply = <&vdd>; 
 	/* USER CODE END sdmmc2 */
 };
@@ -877,6 +878,7 @@
 	status = "okay";
 
 	/* USER CODE BEGIN sdmmc3 */
+	max-frequency = <50000000>; // New
 	/* USER CODE END sdmmc3 */
 };
 
@@ -943,7 +945,8 @@
 	phys = <&usbphyc_port1 0>;
 	phy-names = "usb2-phy";
 	u-boot,force-b-session-valid;
-	dr_mode = "peripheral";
+	//dr_mode = "peripheral";
+	dr_mode = "host";
 	/* USER CODE END usbotg_hs */
 };
 
