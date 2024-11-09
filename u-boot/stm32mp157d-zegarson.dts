@@ -561,6 +561,43 @@
 	status = "okay";
 
 	/* USER CODE BEGIN dsi */
+	#address-cells = <1>;
+	#size-cells = <0>;
+
+	ports {
+		#address-cells = <1>;
+		#size-cells = <0>;
+
+		port@0 {
+			reg = <0>;
+
+			dsi_in: endpoint {
+				remote-endpoint = <&ltdc_ep0_out>;
+			};
+		};
+
+		port@1 {
+			reg = <1>;
+
+			dsi_out: endpoint {
+				remote-endpoint = <&panel_in>;
+			};
+		};
+	};
+
+	panel_ed178am368ms: panel@0 {
+		compatible = "panox,ed178am368ms";
+		reg = <0>;
+		reset-gpios = <&gpiob 0 GPIO_ACTIVE_LOW>;
+		power-supply = <&vdd>;
+		status = "okay";
+
+		port {
+			panel_in: endpoint {
+				remote-endpoint = <&dsi_out>;
+			};
+		};
+	};
 	/* USER CODE END dsi */
 };
 
@@ -774,6 +811,17 @@
 	status = "okay";
 
 	/* USER CODE BEGIN ltdc */
+	default-on;
+	
+	port{
+		#address-cells = <1>;
+		#size-cells = <0>;
+
+		ltdc_ep0_out:endpoint{
+			reg = <0>;
+			remote-endpoint = <&dsi_in>;
+		};
+	};
 	/* USER CODE END ltdc */
 };
 
@@ -865,7 +913,7 @@
 	bus-width = <8>;
 	vmmc-supply = <&v2v9_emmc>;
 	non-removable;
-	mmc-hs400-1_8v;
+	mmc-ddr-1_8v;
 	vqmmc-supply = <&vdd>; 
 	/* USER CODE END sdmmc2 */
 };
@@ -920,6 +968,15 @@
 	status = "okay";
 
 	/* USER CODE BEGIN uart8 */
+	uart-has-rtscts;
+
+	bluetooth{
+		shutdown-gpios = <&gpioe 11 GPIO_ACTIVE_HIGH>;
+		compatible = "brcm,bcm43439-bt";
+		max-speed = <3000000>;
+		vbat-supply = <&vin>;
+		vddio-supply = <&vdd>;
+	};
 	/* USER CODE END uart8 */
 };
 
