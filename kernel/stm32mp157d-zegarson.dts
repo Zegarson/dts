@@ -994,7 +994,7 @@
 
 	bluetooth{
 		shutdown-gpios = <&gpioe 11 GPIO_ACTIVE_HIGH>;
-		compatible = "brcm,bcm43439-bt";
+		compatible = "brcm,bcm43438-bt";
 		max-speed = <3000000>;
 		vbat-supply = <&vin>;
 		vddio-supply = <&vdd>;
