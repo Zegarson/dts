@@ -591,11 +591,26 @@
 	};
 
 	panel_ed178am368ms: panel@0 {
+		status = "okay";
 		compatible = "panox,ed178am368ms";
 		reg = <0>;
-		reset-gpios = <&gpiob 0 GPIO_ACTIVE_LOW>;
+
 		power-supply = <&vdd>;
-		status = "okay";
+		// enable-gpios = <&gpio2 27 GPIO_ACTIVE_HIGH>;
+		reset-gpios = <&gpiob 0 GPIO_ACTIVE_LOW>;
+
+		// panel-init-sequence = [
+		// 	39 00 10 b1 6c 15 15 24 E4 11 f1 80 e4
+		// 		 d7 23 80 c0 d2 58
+		// 	...
+		// 	05 78 01 11
+		// 	05 78 01 29
+		// ];
+
+		// panel-exit-sequence = [
+		// 	05 00 01 28
+		// 	05 78 01 10
+		// ];
 
 		port {
 			panel_in: endpoint {
