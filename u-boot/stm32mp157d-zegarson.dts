@@ -118,6 +118,26 @@
 
 &pinctrl {
 
+	dfsdm_pins_mx: dfsdm_mx-0 {
+		pins1 {
+			pinmux = <STM32_PINMUX('C', 1, AF3)>; /* DFSDM1_DATIN0 */
+			bias-disable;
+		};
+		pins2 {
+			pinmux = <STM32_PINMUX('C', 2, AF6)>; /* DFSDM1_CKOUT */
+			bias-disable;
+			drive-push-pull;
+			slew-rate = <0>;
+		};
+	};
+
+	dfsdm_sleep_pins_mx: dfsdm_sleep_mx-0 {
+		pins {
+			pinmux = <STM32_PINMUX('C', 1, ANALOG)>, /* DFSDM1_DATIN0 */
+					 <STM32_PINMUX('C', 2, ANALOG)>; /* DFSDM1_CKOUT */
+		};
+	};
+
 	i2s2_pins_mx: i2s2_mx-0 {
 		pins {
 			pinmux = <STM32_PINMUX('I', 0, AF5)>, /* I2S2_WS */
@@ -136,6 +156,14 @@
 					 <STM32_PINMUX('I', 1, ANALOG)>, /* I2S2_CK */
 					 <STM32_PINMUX('I', 2, ANALOG)>, /* I2S2_SDI */
 					 <STM32_PINMUX('I', 3, ANALOG)>; /* I2S2_SDO */
+		};
+	};
+
+	m4_spi5_pins_mx: m4_spi5_mx-0 {
+		pins {
+			pinmux = <STM32_PINMUX('F', 8, RSVD)>, /* SPI5_MISO */
+					 <STM32_PINMUX('F', 11, RSVD)>, /* SPI5_MOSI */
+					 <STM32_PINMUX('H', 6, RSVD)>; /* SPI5_SCK */
 		};
 	};
 
@@ -233,17 +261,12 @@
 					 <STM32_PINMUX('C', 7, AF10)>; /* SDMMC2_D7 */
 			bias-pull-up;
 			drive-push-pull;
-			slew-rate = <1>;
+			slew-rate = <3>;
 		};
 		pins2 {
 			pinmux = <STM32_PINMUX('B', 14, AF9)>, /* SDMMC2_D0 */
+					 <STM32_PINMUX('E', 3, AF9)>, /* SDMMC2_CK */
 					 <STM32_PINMUX('G', 6, AF10)>; /* SDMMC2_CMD */
-			bias-disable;
-			drive-push-pull;
-			slew-rate = <1>;
-		};
-		pins3 {
-			pinmux = <STM32_PINMUX('E', 3, AF9)>; /* SDMMC2_CK */
 			bias-disable;
 			drive-push-pull;
 			slew-rate = <3>;
@@ -264,18 +287,13 @@
 			slew-rate = <3>;
 		};
 		pins2 {
-			pinmux = <STM32_PINMUX('B', 14, AF9)>; /* SDMMC2_D0 */
+			pinmux = <STM32_PINMUX('B', 14, AF9)>, /* SDMMC2_D0 */
+					 <STM32_PINMUX('E', 3, AF9)>; /* SDMMC2_CK */
 			bias-disable;
 			drive-push-pull;
 			slew-rate = <3>;
 		};
 		pins3 {
-			pinmux = <STM32_PINMUX('E', 3, AF9)>; /* SDMMC2_CK */
-			bias-disable;
-			drive-push-pull;
-			slew-rate = <3>;
-		};
-		pins4 {
 			pinmux = <STM32_PINMUX('G', 6, AF10)>; /* SDMMC2_CMD */
 			bias-disable;
 			drive-open-drain;
@@ -349,25 +367,6 @@
 					 <STM32_PINMUX('D', 7, ANALOG)>, /* SDMMC3_D3 */
 					 <STM32_PINMUX('F', 1, ANALOG)>, /* SDMMC3_CMD */
 					 <STM32_PINMUX('G', 15, ANALOG)>; /* SDMMC3_CK */
-		};
-	};
-
-	spi5_pins_mx: spi5_mx-0 {
-		pins {
-			pinmux = <STM32_PINMUX('F', 8, AF5)>, /* SPI5_MISO */
-					 <STM32_PINMUX('F', 11, AF5)>, /* SPI5_MOSI */
-					 <STM32_PINMUX('H', 6, AF5)>; /* SPI5_SCK */
-			bias-disable;
-			drive-push-pull;
-			slew-rate = <1>;
-		};
-	};
-
-	spi5_sleep_pins_mx: spi5_sleep_mx-0 {
-		pins {
-			pinmux = <STM32_PINMUX('F', 8, ANALOG)>, /* SPI5_MISO */
-					 <STM32_PINMUX('F', 11, ANALOG)>, /* SPI5_MOSI */
-					 <STM32_PINMUX('H', 6, ANALOG)>; /* SPI5_SCK */
 		};
 	};
 
@@ -533,6 +532,16 @@
 	/* USER CODE END bsec */
 };
 
+&dfsdm{
+	pinctrl-names = "default", "sleep";
+	pinctrl-0 = <&dfsdm_pins_mx>;
+	pinctrl-1 = <&dfsdm_sleep_pins_mx>;
+	status = "okay";
+
+	/* USER CODE BEGIN dfsdm */
+	/* USER CODE END dfsdm */
+};
+
 &dma1{
 	status = "okay";
 
@@ -561,44 +570,14 @@
 	status = "okay";
 
 	/* USER CODE BEGIN dsi */
-	#address-cells = <1>;
-	#size-cells = <0>;
-
-	ports {
-		#address-cells = <1>;
-		#size-cells = <0>;
-
-		port@0 {
-			reg = <0>;
-
-			dsi_in: endpoint {
-				remote-endpoint = <&ltdc_ep0_out>;
-			};
-		};
-
-		port@1 {
-			reg = <1>;
-
-			dsi_out: endpoint {
-				remote-endpoint = <&panel_in>;
-			};
-		};
-	};
-
-	panel_ed178am368ms: panel@0 {
-		compatible = "panox,ed178am368ms";
-		reg = <0>;
-		reset-gpios = <&gpiob 0 GPIO_ACTIVE_LOW>;
-		power-supply = <&vdd>;
-		status = "okay";
-
-		port {
-			panel_in: endpoint {
-				remote-endpoint = <&dsi_out>;
-			};
-		};
-	};
 	/* USER CODE END dsi */
+};
+
+&dts{
+	status = "okay";
+
+	/* USER CODE BEGIN dts */
+	/* USER CODE END dts */
 };
 
 &gpu{
@@ -832,6 +811,15 @@
 	/* USER CODE END m4_dma2 */
 };
 
+&m4_spi5{
+	pinctrl-names = "default";
+	pinctrl-0 = <&m4_spi5_pins_mx>;
+	status = "okay";
+
+	/* USER CODE BEGIN m4_spi5 */
+	/* USER CODE END m4_spi5 */
+};
+
 &mdma1{
 	status = "okay";
 
@@ -928,16 +916,6 @@
 	/* USER CODE BEGIN sdmmc3 */
 	max-frequency = <50000000>; // New
 	/* USER CODE END sdmmc3 */
-};
-
-&spi5{
-	pinctrl-names = "default", "sleep";
-	pinctrl-0 = <&spi5_pins_mx>;
-	pinctrl-1 = <&spi5_sleep_pins_mx>;
-	status = "okay";
-
-	/* USER CODE BEGIN spi5 */
-	/* USER CODE END spi5 */
 };
 
 &tamp{

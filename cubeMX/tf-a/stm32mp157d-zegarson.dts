@@ -96,17 +96,12 @@
 					 <STM32_PINMUX('C', 7, AF10)>; /* SDMMC2_D7 */
 			bias-pull-up;
 			drive-push-pull;
-			slew-rate = <1>;
+			slew-rate = <3>;
 		};
 		pins2 {
 			pinmux = <STM32_PINMUX('B', 14, AF9)>, /* SDMMC2_D0 */
+					 <STM32_PINMUX('E', 3, AF9)>, /* SDMMC2_CK */
 					 <STM32_PINMUX('G', 6, AF10)>; /* SDMMC2_CMD */
-			bias-disable;
-			drive-push-pull;
-			slew-rate = <1>;
-		};
-		pins3 {
-			pinmux = <STM32_PINMUX('E', 3, AF9)>; /* SDMMC2_CK */
 			bias-disable;
 			drive-push-pull;
 			slew-rate = <3>;
@@ -180,8 +175,8 @@
 	/* USER CODE END rcc */
 
 	st,clksrc = <
-		CLK_CKPER_DISABLED
-		CLK_SDMMC12_PLL3R
+		CLK_CKPER_HSE
+		CLK_SDMMC12_PLL4P
 		CLK_STGEN_HSE
 		CLK_I2C46_HSI
 		CLK_SDMMC3_PLL4P
@@ -215,9 +210,9 @@
 			divmn = < 2 65 >;
 			frac = < 0x1400 >;
 		};
-		pll3_vco_416Mhz: pll3-vco-416Mhz {
+		pll3_vco_600Mhz: pll3-vco-600Mhz {
 			src = < CLK_PLL3_HSE >;
-			divmn = < 2 51 >;
+			divmn = < 2 74 >;
 		};
 		pll4_vco_600Mhz: pll4-vco-600Mhz {
 			src = < CLK_PLL4_HSE >;
@@ -262,8 +257,8 @@
 		st,pll = < &pll3_cfg1 >;
 
 		pll3_cfg1: pll3_cfg1 {
-			st,pll_vco = < &pll3_vco_416Mhz >;
-			st,pll_div_pqr = < 1 39 3 >;
+			st,pll_vco = < &pll3_vco_600Mhz >;
+			st,pll_div_pqr = < 2 49 74 >;
 		};
 		/* USER CODE BEGIN pll3 */
 		/* USER CODE END pll3 */
@@ -277,7 +272,7 @@
 
 		pll4_cfg1: pll4_cfg1 {
 			st,pll_vco = < &pll4_vco_600Mhz >;
-			st,pll_div_pqr = < 11 49 23 >;
+			st,pll_div_pqr = < 5 44 24 >;
 		};
 		/* USER CODE BEGIN pll4 */
 		/* USER CODE END pll4 */
