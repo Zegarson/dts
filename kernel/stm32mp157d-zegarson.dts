@@ -107,6 +107,40 @@
 		stdout-path = "serial0:115200n8";
 	};
 
+	led {
+		compatible = "gpio-leds";
+		led-d1 {
+			label = "disk-activity";
+			gpios = <&gpioa 13 GPIO_ACTIVE_LOW>;
+			linux,default-trigger = "heartbeat";
+			deledfault-state = "off";
+		};
+	};
+
+	max98357a: codec {
+        compatible = "maxim,max98357a";
+		#sound-dai-cells = <0>;
+    };
+
+	sound {
+        compatible = "simple-audio-card";
+        simple-audio-card,name = "stm32mp1-max98357a";
+
+        /* Specify the audio format */
+        simple-audio-card,format = "i2s";
+        simple-audio-card,mclk-fs = <256>;
+
+        /* Connect CPU DAI */
+        simple-audio-card,cpu {
+            sound-dai = <&i2s1>;
+        };
+
+        /* Connect Codec DAI */
+        simple-audio-card,codec {
+            sound-dai = <&max98357a>;
+        };
+    };
+
 	wifi_pwrseq: wifi-pwrseq {
 		compatible = "mmc-pwrseq-simple";
 		reset-gpios = <&gpiof 2 GPIO_ACTIVE_LOW>;
@@ -835,6 +869,13 @@
 	status = "okay";
 
 	/* USER CODE BEGIN i2s1 */
+	clocks = <&rcc SPI2>, <&rcc SPI2_K>, <&rcc PLL3_Q>, <&rcc PLL3_R>;
+    clock-names = "pclk", "i2sclk", "x8k", "x11k";
+
+	//dmas = <&dma1 3 3 0>;  /* DMA2, Stream 3, Channel 3 */
+    dma-names = "tx";      /* TX channel only */
+	
+    #sound-dai-cells = <0>;
 	/* USER CODE END i2s1 */
 };
 
@@ -845,6 +886,7 @@
 	status = "okay";
 
 	/* USER CODE BEGIN i2s2 */
+	dma-names = "tx";
 	/* USER CODE END i2s2 */
 };
 
