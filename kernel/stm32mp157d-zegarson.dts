@@ -112,7 +112,7 @@
 		led-d1 {
 			label = "disk-activity";
 			gpios = <&gpioa 13 GPIO_ACTIVE_LOW>;
-			linux,default-trigger = "heartbeat";
+			linux,default-trigger = "mmc0";
 			deledfault-state = "off";
 		};
 	};
