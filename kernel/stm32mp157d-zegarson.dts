@@ -110,34 +110,30 @@
 	led {
 		compatible = "gpio-leds";
 		led-d1 {
-			label = "disk-activity";
+			label = "led1";
 			gpios = <&gpioa 13 GPIO_ACTIVE_LOW>;
 			linux,default-trigger = "mmc0";
-			deledfault-state = "off";
+			default-state = "off";
 		};
 	};
 
-	max98357a: codec {
-        compatible = "maxim,max98357a";
-		#sound-dai-cells = <0>;
-    };
-
 	sound {
-        compatible = "simple-audio-card";
-        simple-audio-card,name = "stm32mp1-max98357a";
+		compatible = "audio-graph-card";
+		label = "STM32MP15-DK";
+		dais = <&i2s1_port>;
+		status = "okay";
+	};
 
-        /* Specify the audio format */
-        simple-audio-card,format = "i2s";
-        simple-audio-card,mclk-fs = <256>;
+	codec: max98357a {
+        compatible = "maxim,max98357a";
+        #sound-dai-cells = <0>;
+        clocks = <&i2s1>;
+        clock-names = "MCLK";
 
-        /* Connect CPU DAI */
-        simple-audio-card,cpu {
-            sound-dai = <&i2s1>;
-        };
-
-        /* Connect Codec DAI */
-        simple-audio-card,codec {
-            sound-dai = <&max98357a>;
+        codec_port: port {
+            codec_endpoint: endpoint {
+                remote-endpoint = <&i2s1_endpoint>;
+            };
         };
     };
 
@@ -869,13 +865,24 @@
 	status = "okay";
 
 	/* USER CODE BEGIN i2s1 */
-	clocks = <&rcc SPI2>, <&rcc SPI2_K>, <&rcc PLL3_Q>, <&rcc PLL3_R>;
+	#clock-cells = <0>;
+	clocks = <&rcc SPI1>, <&rcc SPI1_K>, <&rcc PLL3_Q>, <&rcc PLL3_R>;
     clock-names = "pclk", "i2sclk", "x8k", "x11k";
+	#sound-dai-cells = <1>;
 
-	//dmas = <&dma1 3 3 0>;  /* DMA2, Stream 3, Channel 3 */
-    dma-names = "tx";      /* TX channel only */
-	
-    #sound-dai-cells = <0>;
+	i2s1_port: port {
+        #address-cells = <1>;
+        #size-cells = <0>;
+		i2s1_endpoint: endpoint {
+            /* system-clock-frequency = <48000>; */
+            /* system-clock-direction-out; */
+            /* frame-master; */
+            /* bitclock-master; */
+			format = "i2s";
+			mclk-fs = <256>;
+            remote-endpoint = <&codec_endpoint>;
+		};
+	};
 	/* USER CODE END i2s1 */
 };
 
