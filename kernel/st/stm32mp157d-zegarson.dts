@@ -101,6 +101,7 @@
 
 	aliases {
 		serial0 = &uart4;
+		serial3 = &uart8;
 	};
 
 	chosen {
@@ -119,14 +120,16 @@
 
 	sound {
 		compatible = "audio-graph-card";
-		label = "STM32MP15-DK";
-		dais = <&i2s1_port>;
+		label = "Integrated Audio Device";
+		//routing = "Playback" , "MCLK";
+		dais = <&i2s1_port &dfsdm0_port>;
 		status = "okay";
 	};
 
 	codec: max98357a {
         compatible = "maxim,max98357a";
         #sound-dai-cells = <0>;
+		sdmode-gpios = <&gpioi 9 GPIO_ACTIVE_HIGH>;
         clocks = <&i2s1>;
         clock-names = "MCLK";
 
@@ -136,6 +139,18 @@
             };
         };
     };
+	
+	dmic0: dmic-0 {
+		compatible = "dmic-codec";
+		#sound-dai-cells = <1>;
+		status = "okay";
+
+		port {
+			dmic0_endpoint: endpoint {
+				remote-endpoint = <&dfsdm_endpoint0>;
+			};
+		};
+	};
 
 	wifi_pwrseq: wifi-pwrseq {
 		compatible = "mmc-pwrseq-simple";
@@ -574,6 +589,32 @@
 	status = "okay";
 
 	/* USER CODE BEGIN dfsdm */
+	spi-max-frequency = <3072000>;
+	clocks = <&rcc DFSDM_K>, <&rcc ADFSDM_K>;
+	clock-names = "dfsdm", "audio";
+ 
+	dfsdm0: filter@0 {
+		compatible = "st,stm32-dfsdm-dmic";
+		st,adc-channels = <0>;
+		st,adc-channel-names = "dmic_u1";
+		st,adc-channel-types = "SPI_R";
+		st,adc-channel-clk-src = "CLKOUT";
+		st,filter-order = <3>;
+		status = "okay";
+
+		asoc_pdm0: dfsdm-dai {
+			compatible = "st,stm32h7-dfsdm-dai";
+			#sound-dai-cells = <0>;
+			io-channels = <&dfsdm0 0>;
+			status = "okay";
+
+			dfsdm0_port: port {
+				dfsdm_endpoint0: endpoint {
+					remote-endpoint = <&dmic0_endpoint>;
+				};
+			};
+		};
+	};
 	/* USER CODE END dfsdm */
 };
 
@@ -866,7 +907,7 @@
 
 	/* USER CODE BEGIN i2s1 */
 	#clock-cells = <0>;
-	clocks = <&rcc SPI1>, <&rcc SPI1_K>, <&rcc PLL3_Q>, <&rcc PLL3_R>;
+	clocks = <&rcc SPI1>, <&rcc SPI1_K>, <&rcc PLL4_P>, <&rcc PLL3_Q>;
     clock-names = "pclk", "i2sclk", "x8k", "x11k";
 	#sound-dai-cells = <1>;
 
@@ -893,7 +934,6 @@
 	status = "okay";
 
 	/* USER CODE BEGIN i2s2 */
-	dma-names = "tx";
 	/* USER CODE END i2s2 */
 };
 

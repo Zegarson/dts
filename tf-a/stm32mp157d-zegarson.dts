@@ -468,15 +468,6 @@
 	/* USER CODE END sdmmc2 */
 };
 
-&sdmmc3{
-	pinctrl-names = "default";
-	pinctrl-0 = <&sdmmc3_pins_mx>;
-	status = "okay";
-
-	/* USER CODE BEGIN sdmmc3 */
-	/* USER CODE END sdmmc3 */
-};
-
 &uart4{
 	pinctrl-names = "default";
 	pinctrl-0 = <&uart4_pins_mx>;
